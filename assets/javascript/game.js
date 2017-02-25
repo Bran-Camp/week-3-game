@@ -4,7 +4,7 @@ var wordList = [
 "fruits",
 "cake",
 "steak"
-]
+];
 
 var chosenWord = "";
 var letterInChosenWord = [];
@@ -13,21 +13,89 @@ var blanksAndSuccesses = [];
 var wrongGuesses = [];
 
 var winCounter = 0;
-var lossCounter = 0;
+var lossCounter = 1;
 var numGuesses = 9;
 
 function startGame(){
+
+	numGuesses = 9;
+	blanksAndSuccesses = [];
+	wrongGuesses = [];
+
+	chosenWord = wordList[Math.floor(Math.random() * wordList.length)];
+	letterInChosenWord = chosenWord.split("");
+	numBlanks = letterInChosenWord.length;
+	console.log(chosenWord);
+	console.log(numBlanks);
+
+	for(var i = 0; i < numBlanks; i++){
+		blanksAndSuccesses.push("_");
+	}
+	console.log(blanksAndSuccesses);
+	document.getElementById('word-blank').innerHTML = blanksAndSuccesses.join(" ");
+	document.getElementById('guesses-left').innerHTML = numGuesses;
+	
 
 }
 
 function checkLetters(letter){
 
+	var letterInWord = false; 
+
+	for(var i = 0; i < numBlanks; i++){
+		if(chosenWord[i] === letter){
+			letterInWord = true;
+
+		}
+	}
+
+	if(letterInWord){
+		for(i = 0; i <numBlanks; i++){
+			if(chosenWord[i] === letter){
+			blanksAndSuccesses[i] = letter;
+		}
+	}
+
+	console.log("inside our checkletter function ", blanksAndSuccesses);
+
+	} else {
+		numGuesses --;
+		wrongGuesses.push(letter);
+	}
+
+	console.log("our wrong guesses in checkletter function", wrongGuesses);
+
 }
 
 function roundComplete(){
 
-}
+	document.getElementById('word-blank').innerHTML = blanksAndSuccesses.join(" ");
+	document.getElementById('guesses-left').innerHTML = numGuesses;
+	document.getElementById('wrong-guesses').innerHTML = wrongGuesses.join(" ");
+
+	if(letterInChosenWord.join(" ") === blanksAndSuccesses.join(" ")){
+		winCounter++;
+		alert("You a winner. Ha. Ha. Ha.");
+		document.getElementById('win-counter').innerHTML = winCounter;
+		startGame();
+
+		}else if(numGuesses === 0) {
+			document.getElementById('loss-counter').innerHTML = lossCounter++;
+			alert("You lose.");
+			startGame();
+
+		}
+
+	}
+
+
+startGame();
 
 document.onkeyup = function(event){
-	
+
+	var letterGuessed = String.fromCharCode(event.keyCode).toLowerCase();
+	console.log("this is the letter we typed", letterGuessed);
+	checkLetters(letterGuessed);
+	roundComplete();
+
 }
