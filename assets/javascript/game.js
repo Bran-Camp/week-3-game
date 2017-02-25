@@ -25,13 +25,10 @@ function startGame(){
 	chosenWord = wordList[Math.floor(Math.random() * wordList.length)];
 	letterInChosenWord = chosenWord.split("");
 	numBlanks = letterInChosenWord.length;
-	console.log(chosenWord);
-	console.log(numBlanks);
-
+	
 	for(var i = 0; i < numBlanks; i++){
 		blanksAndSuccesses.push("_");
 	}
-	console.log(blanksAndSuccesses);
 	document.getElementById('word-blank').innerHTML = blanksAndSuccesses.join(" ");
 	document.getElementById('guesses-left').innerHTML = numGuesses;
 	
@@ -56,15 +53,14 @@ function checkLetters(letter){
 		}
 	}
 
-	console.log("inside our checkletter function ", blanksAndSuccesses);
+	
 
 	} else {
 		numGuesses --;
 		wrongGuesses.push(letter);
 	}
 
-	console.log("our wrong guesses in checkletter function", wrongGuesses);
-
+	
 }
 
 function roundComplete(){
@@ -81,6 +77,7 @@ function roundComplete(){
 
 		}else if(numGuesses === 0) {
 			document.getElementById('loss-counter').innerHTML = lossCounter++;
+			document.getElementById('wrong-guesses').innerHTML = "";
 			alert("You lose.");
 			startGame();
 
@@ -94,7 +91,6 @@ startGame();
 document.onkeyup = function(event){
 
 	var letterGuessed = String.fromCharCode(event.keyCode).toLowerCase();
-	console.log("this is the letter we typed", letterGuessed);
 	checkLetters(letterGuessed);
 	roundComplete();
 
